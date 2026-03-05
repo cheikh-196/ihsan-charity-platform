@@ -4,6 +4,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -26,6 +27,7 @@ function App() {
             <Route path="/transparency" element={<TransparencyPage />} />
             <Route path="/validator" element={<ValidatorPage />} />
           </Routes>
+          <Footer />
         </div>
       </Router>
     </AuthProvider>

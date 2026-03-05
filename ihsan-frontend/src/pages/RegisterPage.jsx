@@ -4,10 +4,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 export default function RegisterPage() {
     const { register } = useAuth();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [form, setForm] = useState({ name: '', email: '', password: '', role: 'DONOR' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -31,19 +33,19 @@ export default function RegisterPage() {
             <div className="auth-card">
                 <div className="auth-header">
                     <div className="moon">🌙</div>
-                    <h1>Créer un compte</h1>
-                    <p>Rejoignez la communauté IHSAN</p>
+                    <h1>{t('register.title')}</h1>
+                    <p>{t('register.subtitle')}</p>
                 </div>
 
-                {error && <div className="alert alert-error">⚠️ {error}</div>}
+                {error && <div className="alert alert-error">⚠️ {t('register.error_title')}: {error}</div>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label className="form-label">Nom complet</label>
+                        <label className="form-label">{t('register.name_label')}</label>
                         <input
                             type="text"
                             className="form-input"
-                            placeholder="Votre nom"
+                            placeholder={t('register.name_placeholder')}
                             value={form.name}
                             onChange={(e) => setForm({ ...form, name: e.target.value })}
                             required
@@ -51,11 +53,11 @@ export default function RegisterPage() {
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">Email</label>
+                        <label className="form-label">{t('register.email_label')}</label>
                         <input
                             type="email"
                             className="form-input"
-                            placeholder="votre@email.com"
+                            placeholder={t('register.email_placeholder')}
                             value={form.email}
                             onChange={(e) => setForm({ ...form, email: e.target.value })}
                             required
@@ -63,11 +65,11 @@ export default function RegisterPage() {
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">Mot de passe</label>
+                        <label className="form-label">{t('register.password_label')}</label>
                         <input
                             type="password"
                             className="form-input"
-                            placeholder="Minimum 6 caractères"
+                            placeholder={t('register.password_placeholder')}
                             value={form.password}
                             onChange={(e) => setForm({ ...form, password: e.target.value })}
                             required
@@ -76,25 +78,25 @@ export default function RegisterPage() {
                     </div>
 
                     <div className="form-group">
-                        <label className="form-label">Rôle</label>
+                        <label className="form-label">{t('register.role_label')}</label>
                         <select
                             className="form-select"
                             value={form.role}
                             onChange={(e) => setForm({ ...form, role: e.target.value })}
                         >
-                            <option value="DONOR">🤲 Donneur</option>
-                            <option value="VALIDATOR">✅ Validateur</option>
-                            <option value="PARTNER">🤝 Partenaire</option>
+                            <option value="DONOR">{t('register.role_donor')}</option>
+                            <option value="VALIDATOR">{t('register.role_validator')}</option>
+                            <option value="PARTNER">{t('register.role_partner')}</option>
                         </select>
                     </div>
 
                     <button type="submit" className="btn btn-primary btn-block btn-lg" disabled={loading}>
-                        {loading ? <span className="spinner"></span> : '✨ Créer mon compte'}
+                        {loading ? <span className="spinner"></span> : t('register.submit_button')}
                     </button>
                 </form>
 
                 <div className="auth-footer">
-                    Déjà inscrit ? <Link to="/login">Se connecter</Link>
+                    <Link to="/login">{t('register.login_link')}</Link>
                 </div>
             </div>
         </div>

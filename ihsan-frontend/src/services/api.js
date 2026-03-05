@@ -2,7 +2,7 @@
 // IHSAN Frontend — API Service
 // ===================================
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:3002';
 
 function getHeaders() {
     const token = localStorage.getItem('ihsan_token');
@@ -43,7 +43,28 @@ export const needsAPI = {
 export const donationsAPI = {
     create: (data) => request('POST', '/donations', data),
     getById: (id) => request('GET', `/donations/${id}`),
-    confirm: (id, data) => request('POST', `/donations/${id}/confirm`, data),
+    confirm: (id, data) => {
+        // Si data est FormData, on gère différemment
+        if (data instanceof FormData) {
+            const token = localStorage.getItem('ihsan_token');
+            const headers = {};
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+            
+            return fetch(`${API_URL}/donations/${id}/confirm`, {
+                method: 'POST',
+                headers,
+                body: data
+            }).then(async res => {
+                const responseData = await res.json();
+                if (!res.ok) {
+                    throw new Error(responseData.message || 'Erreur serveur');
+                }
+                return responseData;
+            });
+        }
+        // Fallback pour l'ancien format
+        return request('POST', `/donations/${id}/confirm`, data);
+    },
 };
 
 // Public
